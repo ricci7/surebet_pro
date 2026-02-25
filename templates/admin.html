@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Painel Admin</h3>
+
+<ul>
+{% for user in users %}
+    <li>{{ user.email }} - Plano: {{ user.plan }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

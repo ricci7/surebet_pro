@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="topbar">
+  <div>
+    <h2>Dashboard</h2>
+    <div class="muted" style="margin-top:6px;">
+      Plano: <strong>{{ current_user.plan.upper() }}</strong> • Ilimitado
+    </div>
+  </div>
+
+  <div class="topbar-actions">
+    <a class="btn btn-ghost" href="{{ url_for('export_history', period=period) }}">Exportar CSV</a>
+
+    <form method="POST" action="{{ url_for('clear_history') }}"
+          onsubmit="return confirm('Tem certeza que deseja limpar todo o histórico?');">
+      <button class="btn btn-danger" type="submit">Limpar Histórico</button>
+    </form>
+  </div>
+</div>
+
+<div class="metrics">
+  <div class="metric-card">
+    <div class="metric-label">Operações</div>
+    <div class="metric-value">{{ metrics.count }}</div>
+  </div>
+
+  <div class="metric-card">
+    <div class="metric-label">Total investido</div>
+    <div class="metric-value">R$ {{ "%.2f"|format(metrics.total_investment) }}</div>
+  </div>
+
+  <div class="metric-card">
+    <div class="metric-label">Lucro acumulado</div>
+    <div class="metric-value">R$ {{ "%.2f"|format(metrics.total_profit) }}</div>
+  </div>
+
+  <div class="metric-card">
+    <div class="metric-label">ROI médio</div>
+    <div class="metric-value">{{ "%.2f"|format(metrics.avg_roi) }}%</div>
+  </div>
+</div>
+
+<div class="filters">
+  <a class="chip {% if period=='7d' %}chip-active{% endif %}" href="{{ url_for('dashboard', period='7d') }}">7 dias</a>
+  <a class="chip {% if period=='30d' %}chip-active{% endif %}" href="{{ url_for('dashboard', period='30d') }}">30 dias</a>
+  <a class="chip {% if period=='all' %}chip-active{% endif %}" href="{{ url_for('dashboard', period='all') }}">Tudo</a>
+</div>
+
+<h3>Calculadora</h3>
+
+<form method="POST">
+  <input type="number" step="0.01" min="0" name="odds" placeholder="Odd 1" required>
+  <input type="number" step="0.01" min="0" name="odds" placeholder="Odd 2" required>
+  <input type="number" step="0.01" min="0" name="odds" placeholder="Odd 3 (opcional)">
+  <input type="number" step="0.01" min="0" name="investment" placeholder="Investimento total" required>
+  <button class="btn btn-primary" type="submit">Calcular</button>
+</form>
+
+{% if result %}
+  <div class="result-box {% if result.surebet %}success{% else %}error{% endif %}">
+    {% if result.surebet %}
+      <h4>Surebet encontrada 🚀</h4>
+      <p>ROI: <strong>{{ result.roi }}%</strong></p>
+      <p>Stakes:
+        <strong>
+          {% for s in result.stakes %}
+            R$ {{ "%.2f"|format(s) }}{% if not loop.last %} • {% endif %}
+          {% endfor %}
+        </strong>
+      </p>
+      <p>Lucro Garantido: <strong>R$ {{ "%.2f"|format(result.profit) }}</strong></p>
+    {% else %}
+      <p>Não é arbitragem.</p>
+    {% endif %}
+  </div>
+{% endif %}
+
+<h3 style="margin-top:25px;">Histórico</h3>
+
+{% if history %}
+  <div class="history">
+    {% for calc in history %}
+      <div class="history-item">
+        <div class="history-top">
+          <div class="history-odds">
+            Odds: <strong>{{ calc.odds.replace(',', ' • ') }}</strong>
+          </div>
+          <div class="history-date">
+            {{ calc.created_at.strftime("%d/%m/%Y %H:%M") }}
+          </div>
+        </div>
+
+        <div class="history-stats">
+          <div class="stat"><span>Inv.</span> <strong>R$ {{ "%.2f"|format(calc.investment) }}</strong></div>
+          <div class="stat"><span>ROI</span> <strong>{{ "%.2f"|format(calc.roi) }}%</strong></div>
+          <div class="stat"><span>Lucro</span> <strong>R$ {{ "%.2f"|format(calc.profit) }}</strong></div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="result-box">
+    <p class="muted">Ainda não há cálculos salvos.</p>
+  </div>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const oddInputs = document.querySelectorAll('input[name="odds"]');
+
+  oddInputs.forEach(input => {
+    input.addEventListener("input", function () {
+      let value = this.value.replace(/\D/g, ""); // remove tudo que não for número
+
+      if (value.length >= 2) {
+        value = value.slice(0, -2) + "." + value.slice(-2);
+      }
+
+      this.value = value;
+    });
+  });
+});
+</script>
+
+{% endblock %}
