@@ -10,10 +10,10 @@ body{
   position: relative;
 
   background-image: url("/static/rachadores.jpg");
-  background-position: center 15%;
+  background-position: center 10%;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: 100%;
+  background-size: 90%;
 }
 
 /* overlay escuro elegante */
