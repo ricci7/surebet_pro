@@ -1,5 +1,5 @@
 /* =========================
-   FUNDO FINTECH (SEM CORTAR)
+   FUNDO FINTECH (VERSÃO ORIGINAL - COVER)
    ========================= */
 
 body{
@@ -7,40 +7,24 @@ body{
   font-family: 'Inter', sans-serif;
   color: white;
   min-height: 100vh;
-  display: block;
   position: relative;
 
-  /* imagem inteira (sem corte) */
-  background: url("/static/rachadores.jpg") center/contain no-repeat fixed;
-  background-color: #0f172a;
-}
-
-/* imagem desfocada preenchendo o fundo (premium) */
-body::after{
-  content:"";
-  position: fixed;
-  inset: 0;
   background: url("/static/rachadores.jpg") center/cover no-repeat fixed;
-  filter: blur(18px) brightness(0.45);
-  transform: scale(1.08);
-  z-index: -2;
 }
 
-/* overlay fintech por cima do blur */
+/* overlay escuro elegante */
 body::before{
   content:"";
   position: fixed;
   inset: 0;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(0,255,136,0.10), transparent 45%),
-    radial-gradient(circle at 80% 20%, rgba(99,102,241,0.12), transparent 50%),
-    linear-gradient(135deg,
-      rgba(15,23,42,0.72),
-      rgba(17,24,39,0.82),
-      rgba(0,0,0,0.88)
-    );
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.75),
+    rgba(17, 24, 39, 0.85),
+    rgba(0, 0, 0, 0.90)
+  );
   pointer-events:none;
-  z-index: -1;
+  z-index: 0;
 }
 
 /* =========================
@@ -206,7 +190,6 @@ form button:hover{
   align-items:center;
 }
 
-/* botões */
 .btn{
   display:inline-block;
   padding: 10px 14px;
