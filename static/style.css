@@ -1,26 +1,36 @@
+/* =========================
+   FUNDO FINTECH (SEM CORTAR)
+   ========================= */
+
 body{
   margin: 0;
   font-family: 'Inter', sans-serif;
   color: white;
   min-height: 100vh;
-
-  background-image: url("/static/rachadores.jpg");
-  background-repeat: no-repeat;
-  background-position: center top;   /* melhor pra imagens com “topo” importante */
-  background-size: cover;
-  background-attachment: fixed;
-
   display: block;
   position: relative;
+
+  /* imagem inteira (sem corte) */
+  background: url("/static/rachadores.jpg") center/contain no-repeat fixed;
+  background-color: #0f172a;
 }
 
-/* Overlay fintech corrigido */
+/* imagem desfocada preenchendo o fundo (premium) */
+body::after{
+  content:"";
+  position: fixed;
+  inset: 0;
+  background: url("/static/rachadores.jpg") center/cover no-repeat fixed;
+  filter: blur(18px) brightness(0.45);
+  transform: scale(1.08);
+  z-index: -2;
+}
+
+/* overlay fintech por cima do blur */
 body::before{
   content:"";
-  position:fixed;
-  inset:0;
-
-  /* camada escura + gradiente fintech */
+  position: fixed;
+  inset: 0;
   background:
     radial-gradient(circle at 20% 10%, rgba(0,255,136,0.10), transparent 45%),
     radial-gradient(circle at 80% 20%, rgba(99,102,241,0.12), transparent 50%),
@@ -29,30 +39,20 @@ body::before{
       rgba(17,24,39,0.82),
       rgba(0,0,0,0.88)
     );
-
-  /* blur mais leve */
-  backdrop-filter: blur(2px);
-
   pointer-events:none;
-  z-index:0;
+  z-index: -1;
 }
 
-.layout{
-  position: relative;
-  z-index: 1;
-}
+/* =========================
+   LAYOUT BASE (base.html)
+   ========================= */
 
-/* garante que o conteúdo fique acima */
-.layout {
-  position: relative;
-  z-index: 1;
-}
-
-/* seu layout do base.html */
 .layout{
   display:flex;
   min-height:100vh;
   width:100%;
+  position: relative;
+  z-index: 1;
 }
 
 .content{
@@ -61,94 +61,130 @@ body::before{
   box-sizing:border-box;
 }
 
-/* Sidebar */
-.sidebar {
-    width: 220px;
-    background-color: #111827;
-    height: 100vh;
-    padding: 30px 20px;
-    box-sizing: border-box;
+@media (max-width: 700px){
+  .content{ padding: 20px; }
 }
 
-.sidebar h2 {
-    color: #00ff88;
-    margin-bottom: 40px;
+/* =========================
+   SIDEBAR
+   ========================= */
+
+.sidebar{
+  width: 220px;
+  height: 100vh;
+  padding: 30px 20px;
+  box-sizing: border-box;
+
+  background: rgba(17,24,39,0.82);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255,255,255,0.06);
 }
 
-.sidebar h2 span {
-    color: white;
+.sidebar h2{
+  color: #00ff88;
+  margin-bottom: 40px;
 }
 
-.sidebar a {
-    display: block;
-    color: #9ca3af;
-    text-decoration: none;
-    margin-bottom: 20px;
-    font-weight: 500;
+.sidebar h2 span{
+  color: white;
 }
 
-.sidebar a:hover {
-    color: #00ff88;
+.sidebar a{
+  display: block;
+  color: #9ca3af;
+  text-decoration: none;
+  margin-bottom: 20px;
+  font-weight: 500;
 }
 
-/* Main */
-.main {
-    flex: 1;
-    padding: 40px;
+.sidebar a:hover{
+  color: #00ff88;
 }
 
-h3 {
-    margin-bottom: 25px;
+/* =========================
+   TIPOGRAFIA
+   ========================= */
+
+h3{
+  margin-bottom: 25px;
 }
 
-/* Form */
-form input, form button {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    border: none;
-    font-size: 14px;
+/* =========================
+   FORM
+   ========================= */
+
+form input, form button{
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
 }
 
-form input {
-    background-color: #1f2937;
-    color: white;
+form input{
+  background: rgba(31, 41, 55, 0.70);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: white;
+  outline: none;
 }
 
-form button {
-    background-color: #00ff88;
-    font-weight: bold;
-    cursor: pointer;
+form input::placeholder{
+  color: rgba(156,163,175,0.9);
 }
 
-form button:hover {
-    background-color: #00cc6a;
+form button{
+  background-color: #00ff88;
+  font-weight: bold;
+  cursor: pointer;
+  color: #0f172a;
 }
 
-/* Result Box */
-.result-box {
-    background-color: #1f2937;
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 20px;
+form button:hover{
+  background-color: #00cc6a;
 }
 
-.success {
-    border-left: 4px solid #00ff88;
+/* =========================
+   BOXES / CARDS
+   ========================= */
+
+.result-box,
+.metric-card,
+.history-item,
+.card{
+  background: rgba(31, 41, 55, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
 }
 
-.error {
-    border-left: 4px solid #ff4d4d;
+.result-box{
+  padding: 20px;
+  margin-top: 20px;
 }
 
-.alert {
-    background-color: #1f2937;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+.success{
+  border-left: 4px solid #00ff88;
 }
-/* ===== DASHBOARD PREMIUM (ADD NO FINAL) ===== */
+
+.error{
+  border-left: 4px solid #ff4d4d;
+}
+
+.alert,
+.flash{
+  background: rgba(31, 41, 55, 0.70);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   DASHBOARD PREMIUM
+   ========================= */
 
 .topbar{
   display:flex;
@@ -170,13 +206,14 @@ form button:hover {
   align-items:center;
 }
 
-/* botões (compatível com seu form button) */
+/* botões */
 .btn{
   display:inline-block;
   padding: 10px 14px;
   border-radius: 10px;
-  border: none;
-  background:#1f2937;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(31,41,55,0.55);
+  backdrop-filter: blur(10px);
   color:white;
   cursor:pointer;
   font-weight: 700;
@@ -188,27 +225,33 @@ form button:hover {
   filter: brightness(1.08);
 }
 
+.btn.primary,
 .btn-primary{
   background:#00ff88;
   color:#0f172a;
+  border: none;
 }
 
-.btn-primary:hover{
+.btn-primary:hover,
+.btn.primary:hover{
   background:#00cc6a;
 }
 
+.btn.danger,
 .btn-danger{
   background:#ff4d4d;
   color:#0f172a;
+  border: none;
 }
 
-.btn-danger:hover{
+.btn-danger:hover,
+.btn.danger:hover{
   background:#ff2f2f;
 }
 
 .btn-ghost{
   background: transparent;
-  border: 1px solid #334155;
+  border: 1px solid rgba(255,255,255,0.15);
   color: #e5e7eb;
 }
 
@@ -224,12 +267,13 @@ form button:hover {
 .chip{
   padding: 8px 12px;
   border-radius: 999px;
-  background:#1f2937;
-  border: 1px solid #334155;
+  background: rgba(31,41,55,0.55);
+  border: 1px solid rgba(255,255,255,0.10);
   color:#9ca3af;
   text-decoration:none;
   font-weight: 600;
   font-size: 13px;
+  backdrop-filter: blur(10px);
 }
 
 .chip:hover{
@@ -252,8 +296,6 @@ form button:hover {
 }
 
 .metric-card{
-  background-color:#1f2937;
-  border-radius: 12px;
   padding: 16px;
 }
 
@@ -268,7 +310,7 @@ form button:hover {
   font-weight: 800;
 }
 
-/* histórico premium */
+/* histórico */
 .history{
   display:flex;
   flex-direction:column;
@@ -277,10 +319,8 @@ form button:hover {
 }
 
 .history-item{
-  background-color:#1f2937;
-  border-radius: 12px;
   padding: 14px;
-  border-left: 4px solid #334155;
+  border-left: 4px solid rgba(255,255,255,0.10);
 }
 
 .history-top{
@@ -319,48 +359,6 @@ form button:hover {
 }
 
 @media (max-width: 700px){
-  body{ display:block; }
   .sidebar{ width:100%; height:auto; }
-  .main{ padding:20px; }
   .topbar{ flex-direction:column; align-items:flex-start; }
-}
-/* ===== PATCH FINAL: base.html usa .layout e .content ===== */
-
-/* quem controla o layout é .layout, não o body */
-body{
-  display: block;
-}
-
-/* container principal do base.html */
-.layout{
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-}
-
-/* área principal do base.html (equivale ao .main) */
-.content{
-  flex: 1;
-  padding: 40px;
-  box-sizing: border-box;
-}
-
-/* responsivo: ajuste pro .content (você tinha .main) */
-@media (max-width: 700px){
-  .content{ padding: 20px; }
-}
-/* ===== FINTECH OVERLAY ===== */
-
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background: linear-gradient(
-    135deg,
-    rgba(15, 23, 42, 0.85),
-    rgba(17, 24, 39, 0.90),
-    rgba(0, 0, 0, 0.92)
-  );
-  backdrop-filter: blur(4px);
-  z-index: -1;
 }
