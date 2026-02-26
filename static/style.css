@@ -9,7 +9,11 @@ body{
   min-height: 100vh;
   position: relative;
 
-  background: url("/static/rachadores.jpg") center/cover no-repeat fixed;
+  background-image: url("/static/rachadores.jpg");
+  background-position: center 15%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 108%;
 }
 
 /* overlay escuro elegante */
